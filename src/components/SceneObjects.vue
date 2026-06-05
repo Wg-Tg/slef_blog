@@ -288,7 +288,7 @@ function addOrbitLine(radius: number) {
     new THREE.BufferGeometry().setFromPoints(pts),
     new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.08, depthWrite: false })
   );
-  scene.value.add(line);
+  scene.add(line);
 }
 
 // ---- 星点背景（大小不一） ----
@@ -345,17 +345,17 @@ function createStarField(count: number) {
     color: 0xffffff, size: 0.03, sizeAttenuation: true, transparent: true, opacity: 0.5, depthWrite: false,
   })));
 
-  scene.value.add(group);
+  scene.add(group);
 }
 
 // ---- 场景初始化 ----
 onMounted(() => {
-  if (!scene.value) return;
+  if (!scene) return;
   prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const mobile = props.isMobile;
 
   // 太阳光晕（程序化 sprite）
-  scene.value.add(createSunGlow());
+  scene.add(createSunGlow());
 
   // 轨道线
   props.planets.forEach((p) => addOrbitLine(p.orbitRadius));
@@ -366,7 +366,7 @@ onMounted(() => {
   // 行星系统
   props.planets.forEach((planet) => {
     const group = new THREE.Group();
-    scene.value.add(group);
+    scene.add(group);
     orbitGroups.push(group);
 
     // 程序化纹理
@@ -475,7 +475,7 @@ function onPointerMove(event: PointerEvent) {
   mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
   mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
 
-  const cam = camera.value;
+  const cam = camera;
   if (!cam) return;
   raycaster.setFromCamera(mouse, cam);
   const intersects = raycaster.intersectObjects(planetMeshes, false);
