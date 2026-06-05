@@ -1,0 +1,38 @@
+---
+import Base from '../layouts/Base.astro';
+import ScrollReveal from '../components/ScrollReveal.vue';
+
+// TODO: REPLACE_ME — 替换为你的真实爱好
+const hobbies = [
+  { title: '阅读', description: '小说、哲学、技术书籍，纸质书的触感无法替代。', emoji: '📚' },
+  { title: '摄影', description: '用镜头捕捉光线与瞬间。喜欢街拍和黑白摄影。', emoji: '📷' },
+  { title: '开源贡献', description: '在 GitHub 上参与有趣的项目，让代码改变世界。', emoji: '💻' },
+  { title: '徒步', description: '山野之间是最好的冥想空间。', emoji: '🥾' },
+  { title: '咖啡', description: '从手冲到意式，每一杯都是仪式。', emoji: '☕' },
+  { title: '音乐', description: '吉他、合成器、以及无尽的播放列表。', emoji: '🎸' },
+];
+---
+
+<Base title="Hobbies" description="我的爱好">
+  <div class="content-container py-16">
+    <ScrollReveal client:load>
+      <h1 class="mb-2">Hobbies</h1>
+      <p class="text-muted text-lg mb-12">工作之外的我是这样的。</p>
+    </ScrollReveal>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {hobbies.map((hobby, i) => (
+        <ScrollReveal client:load delay={i * 0.08}>
+          <div class="card card-hover h-full flex flex-col">
+            <!-- Image Placeholder -->
+            <div class="w-full h-40 bg-muted/20 border-2 border-border mb-4 flex items-center justify-center">
+              <span class="text-4xl select-none">{hobby.emoji}</span>
+            </div>
+            <h3 class="text-lg! mb-2">{hobby.title}</h3>
+            <p class="text-muted text-sm m-0 flex-1">{hobby.description}</p>
+          </div>
+        </ScrollReveal>
+      ))}
+    </div>
+  </div>
+</Base>

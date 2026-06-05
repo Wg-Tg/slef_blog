@@ -1,0 +1,236 @@
+/* ========================================
+   新粗野主义 × 纸媒体质感 — 全局样式
+   Neo-Brutalism × Paper Texture Design System
+   ======================================== */
+
+/* ---- CSS Variables / Design Tokens ---- */
+:root {
+  /* Colors */
+  --color-bg: #FBF9F6;
+  --color-surface: #FFFFFF;
+  --color-text: #1A1A1A;
+  --color-accent: #E63946;
+  --color-accent-alt: #F4A261;
+  --color-border: #2B2B2B;
+  --color-muted: #6B6B6B;
+  --color-space: #0B0A0A;
+  --color-star: #EAEAEA;
+  --color-code-bg: #F5F5F5;
+
+  /* Typography */
+  --font-body: Georgia, 'Times New Roman', serif;
+  --font-heading: 'DM Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Spacing */
+  --content-width: 720px;
+
+  /* Borders */
+  --border-default: 2px solid var(--color-border);
+  --border-dashed: 2px dashed var(--color-border);
+
+  /* Shadows */
+  --shadow-hard: 6px 6px 0px var(--color-border);
+  --shadow-hard-hover: 2px 2px 0px var(--color-border);
+
+  /* Radii */
+  --radius-none: 0;
+  --radius-sm: 4px;
+  --radius-max: 8px;
+
+  /* Transitions */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ---- Google Fonts Import ---- */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* ---- Reset & Base ---- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  line-height: 1.8;
+  letter-spacing: 0.01em;
+  overflow-x: hidden;
+}
+
+/* ---- Typography ---- */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin: 0 0 0.5em;
+  color: var(--color-text);
+}
+
+h1 {
+  font-size: 3.5rem;
+}
+
+h2 {
+  font-size: 2.25rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+p {
+  margin: 0 0 1.25em;
+  line-height: 1.8;
+  letter-spacing: 0.01em;
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+  transition: all 0.2s var(--ease-out);
+}
+
+a:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background: var(--color-code-bg);
+  padding: 0.15em 0.4em;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+}
+
+pre {
+  font-family: var(--font-mono);
+  background: var(--color-code-bg);
+  padding: 1.25rem;
+  border: var(--border-default);
+  border-radius: var(--radius-sm);
+  overflow-x: auto;
+  box-shadow: none;
+}
+
+pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  border: var(--border-default);
+  box-shadow: var(--shadow-hard);
+}
+
+blockquote {
+  border-left: 4px solid var(--color-accent);
+  margin: 1.5em 0;
+  padding: 0.75em 1.25em;
+  background: var(--color-surface);
+  font-style: italic;
+  color: var(--color-muted);
+}
+
+hr {
+  border: none;
+  border-top: var(--border-dashed);
+  margin: 2.5rem 0;
+}
+
+/* ---- Utility Classes ---- */
+.content-container {
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* ---- View Transitions ---- */
+::view-transition-old(root) {
+  animation: vt-fade-out 200ms var(--ease-out) forwards;
+}
+
+::view-transition-new(root) {
+  animation: vt-fade-in-up 300ms var(--ease-out) forwards;
+}
+
+@keyframes vt-fade-out {
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+@keyframes vt-fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Solar system specific: leave with rotate */
+::view-transition-old(root).solar-exit {
+  animation: vt-solar-exit 400ms var(--ease-out) forwards;
+}
+
+@keyframes vt-solar-exit {
+  to {
+    opacity: 0;
+    transform: scale(0.9) rotate(10deg);
+  }
+}
+
+/* Navigation bar stays fixed during transitions */
+nav {
+  view-transition-name: nav;
+}
+
+/* ---- Reduced Motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---- Scrollbar ---- */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border: 2px solid var(--color-bg);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-muted);
+}

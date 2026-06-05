@@ -1,0 +1,102 @@
+---
+import { ViewTransitions } from 'astro:transitions';
+import CustomCursor from '../components/CustomCursor.vue';
+
+export interface Props {
+  title?: string;
+  description?: string;
+  hideNav?: boolean;
+}
+
+const { title, description, hideNav = false } = Astro.props;
+
+const navLinks = [
+  { href: '/blog', label: 'Blog' },
+  { href: '/notes', label: 'Notes' },
+  { href: '/about', label: 'About' },
+  { href: '/hobbies', label: 'Hobbies' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Primary Meta -->
+    <title>{title ? `${title} — My Space` : 'My Space — Personal Blog'}</title>
+    {description && <meta name="description" content={description} />}
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title || 'My Space'} />
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:type" content="website" />
+
+    <!-- Global Styles -->
+    <link rel="stylesheet" href="/src/styles/global.css" />
+
+    <ViewTransitions />
+  </head>
+  <body>
+    <!-- Custom Cursor (desktop only) -->
+    <CustomCursor client:only="vue" />
+
+    <!-- Navigation -->
+    {!hideNav && (
+      <nav class="sticky top-0 z-50 bg-bg/95 backdrop-blur-[2px]" style="border-bottom: 2px solid var(--color-border);">
+        <div class="content-container flex items-center justify-between h-16">
+          <!-- Site Title -->
+          <a
+            href="/"
+            class="no-underline! text-text font-heading text-xl font-900 tracking-[-0.02em] hover:text-accent transition-colors duration-200"
+          >
+            <!-- TODO: REPLACE_ME — 你的网站标题 -->
+            My Space
+          </a>
+
+          <!-- Nav Links -->
+          <ul class="flex items-center gap-1 list-none m-0 p-0">
+            {navLinks.map((link) => {
+              const isActive = currentPath.startsWith(link.href);
+              return (
+                <li>
+                  <a
+                    href={link.href}
+                    class={`no-underline! font-heading text-sm font-500 px-3 py-2 transition-colors duration-200 border-b-2 ${
+                      isActive
+                        ? 'text-accent border-accent'
+                        : 'text-muted border-transparent hover:text-text hover:border-border'
+                    }`}
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </nav>
+    )}
+
+    <!-- Main Content -->
+    <main>
+      <slot />
+    </main>
+
+    <!-- Footer -->
+    {!hideNav && (
+      <footer class="border-t-2 border-border mt-20 py-10">
+        <div class="content-container text-center">
+          <p class="text-muted text-sm m-0">
+            &copy; {new Date().getFullYear()} My Space. Powered by Astro.
+          </p>
+        </div>
+      </footer>
+    )}
+  </body>
+</html>

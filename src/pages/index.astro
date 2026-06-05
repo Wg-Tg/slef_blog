@@ -1,0 +1,32 @@
+---
+import Base from '../layouts/Base.astro';
+import SolarSystem from '../components/SolarSystem.vue';
+---
+
+<Base hideNav={true}>
+  <SolarSystem client:only="vue" />
+</Base>
+
+<script>
+  // Listen for planet-click events from SolarSystem and use navigate() for View Transitions
+  document.addEventListener('planet-click', ((e: CustomEvent) => {
+    const url = e.detail?.url;
+    if (url && typeof url === 'string') {
+      document.documentElement.classList.add('solar-exit');
+      // @ts-ignore — navigate() is available globally when View Transitions are enabled
+      if (typeof window.navigate === 'function') {
+        window.navigate(url);
+      } else {
+        window.location.href = url;
+      }
+    }
+  }) as EventListener);
+</script>
+
+<style is:global>
+  /* Full-screen solar page */
+  body:has(.solar-system-wrapper) {
+    overflow: hidden;
+    background: #0B0A0A;
+  }
+</style>
