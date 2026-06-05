@@ -2,75 +2,75 @@
 import Base from '../../layouts/Base.astro';
 import ScrollReveal from '../../components/ScrollReveal.vue';
 
-// 爱好详情数据
-const hobbiesDetail: Record<string, {
-  title: string; icon: string; color: string;
-  intro: string;
-  sections: { heading: string; body: string }[];
-}> = {
-  reading: {
-    title: '阅读', icon: '📚', color: '#7EB8DA',
-    intro: '书籍是我认识世界的主要方式。从小说到哲学，从技术文档到诗歌——每一页纸都承载着另一个人的思想。',
-    sections: [
-      { heading: '偏爱的类型', body: '文学小说、哲学随笔、技术书籍。最近沉迷于博尔赫斯的迷宫叙事和卡尔维诺的轻盈。偶尔也读一些认知科学和行为经济学。' },
-      { heading: '阅读习惯', body: '习惯在清晨和睡前阅读。Kindle 方便出行，但纸质书的触感和墨香是电子屏幕永远无法替代的。书架上的折痕和笔记是时间的痕迹。' },
-      { heading: '近期书单', body: '《看不见的城市》《禅与摩托车维修艺术》《The Pragmatic Programmer》《思考，快与慢》——总是在重读旧书和探索新书之间徘徊。' },
-    ],
-  },
-  photography: {
-    title: '摄影', icon: '📷', color: '#D4A5C4',
-    intro: '摄影让我学会观察——在日常生活中发现被忽略的构图、光线和情感。',
-    sections: [
-      { heading: '风格', body: '偏爱街头摄影和黑白人像。喜欢捕捉不经意的瞬间而非摆拍。光线是我最关注的东西——清晨和黄昏的斜光是不可复制的。' },
-      { heading: '设备', body: '一台 Fujifilm X-T5 和几个定焦镜头。偶尔也用 iPhone 抓拍。器材不重要，重要的是你站在哪里、看向什么方向。' },
-      { heading: '灵感来源', body: 'Saul Leiter 的色彩、Henri Cartier-Bresson 的决定性瞬间、Vivian Maier 的神秘自拍。他们的作品教会我：伟大的照片往往诞生于日常的角落。' },
-    ],
-  },
-  opensource: {
-    title: '开源', icon: '💻', color: '#B8A9D4',
-    intro: '相信开放和协作的力量。开源不仅是代码，更是一种文化和社区精神。',
-    sections: [
-      { heading: '参与的项目', body: '在 GitHub 上维护几个小型工具库，偶尔给感兴趣的仓库提 PR。喜欢写文档和改进开发者体验。' },
-      { heading: '理念', body: '好的开源项目解决真实的问题。比起完美的代码，清晰的文档和友好的社区更重要。每个人都应该能自由地学习、使用和改进软件。' },
-      { heading: '技术兴趣', body: 'TypeScript 类型体操、构建工具链优化、WebGL 创意编程。最近在学习 Rust 和 WebAssembly。' },
-    ],
-  },
-  hiking: {
-    title: '徒步', icon: '🥾', color: '#5A9FC0',
-    intro: '山野之间是最好的冥想空间。远离屏幕，只听到风、鸟鸣和自己的脚步声。',
-    sections: [
-      { heading: '常去的路线', body: '近郊的山脊线是最爱。往返 15 公里，爬升 800 米，刚好一天。沿途有松林、溪流和开阔的山顶视野。' },
-      { heading: '装备', body: '一双好的徒步鞋比什么都重要。背包里常备水、能量棒、急救包和一本口袋书。在山顶读书是奢侈的享受。' },
-      { heading: '感悟', body: '登山的过程像编程——每一步都算数，急不得。到达山顶的满足感很短暂，真正的收获在攀登的过程中。' },
-    ],
-  },
-  coffee: {
-    title: '咖啡', icon: '☕', color: '#F0C4C0',
-    intro: '从手冲到意式，每一杯咖啡都是一场微型实验——水温、研磨度、萃取时间……每个变量都在讲述不同的故事。',
-    sections: [
-      { heading: '冲煮方式', body: '日常最爱 V60 手冲，周末会用摩卡壶做一杯浓郁的"伪意式"。对拉花还处于"意外艺术"阶段——偶尔成功，多数时候是抽象派。' },
-      { heading: '豆子偏好', body: '偏爱埃塞俄比亚耶加雪菲的花果香和哥斯达黎加蜜处理的甜感。喜欢探索不同产地的风味轮，浅烘和中烘是日常。' },
-      { heading: '咖啡哲学', body: '冲咖啡是少数能让我完全专注当下的时刻。称豆、研磨、注水——每个动作都像仪式。这也许是最接近正念的日常实践。' },
-    ],
-  },
-  music: {
-    title: '音乐', icon: '🎸', color: '#C4A8D0',
-    intro: '音乐是时间的艺术。三分钟的旋律可以承载一生的情感。',
-    sections: [
-      { heading: '乐器', body: '弹吉他——木吉他为主，偶尔电吉他。正在自学键盘。喜欢即兴，不喜欢对着谱子弹。' },
-      { heading: '听什么', body: '从 Radiohead 到坂本龙一，从 Miles Davis 到 FKJ。Spotify 算法已经无法预测我的歌单——前一首可能是 Shoegaze，下一首是 Lo-Fi Hip Hop。' },
-      { heading: '音乐与代码', body: '写代码时听 Instrumental——无歌词的音乐不会干扰思维。Lo-Fi、Ambient、电影配乐是编码三件套。' },
-    ],
-  },
-};
-
 export async function getStaticPaths() {
-  return Object.keys(hobbiesDetail).map((slug) => ({ params: { slug } }));
+  const hobbiesDetail: Record<string, {
+    title: string; icon: string; color: string;
+    intro: string;
+    sections: { heading: string; body: string }[];
+  }> = {
+    reading: {
+      title: '阅读', icon: '📚', color: '#7EB8DA',
+      intro: '书籍是我认识世界的主要方式。从小说到哲学，从技术文档到诗歌——每一页纸都承载着另一个人的思想。',
+      sections: [
+        { heading: '偏爱的类型', body: '文学小说、哲学随笔、技术书籍。最近沉迷于博尔赫斯的迷宫叙事和卡尔维诺的轻盈。偶尔也读一些认知科学和行为经济学。' },
+        { heading: '阅读习惯', body: '习惯在清晨和睡前阅读。Kindle 方便出行，但纸质书的触感和墨香是电子屏幕永远无法替代的。书架上的折痕和笔记是时间的痕迹。' },
+        { heading: '近期书单', body: '《看不见的城市》《禅与摩托车维修艺术》《The Pragmatic Programmer》《思考，快与慢》——总是在重读旧书和探索新书之间徘徊。' },
+      ],
+    },
+    photography: {
+      title: '摄影', icon: '📷', color: '#D4A5C4',
+      intro: '摄影让我学会观察——在日常生活中发现被忽略的构图、光线和情感。',
+      sections: [
+        { heading: '风格', body: '偏爱街头摄影和黑白人像。喜欢捕捉不经意的瞬间而非摆拍。光线是我最关注的东西——清晨和黄昏的斜光是不可复制的。' },
+        { heading: '设备', body: '一台 Fujifilm X-T5 和几个定焦镜头。偶尔也用 iPhone 抓拍。器材不重要，重要的是你站在哪里、看向什么方向。' },
+        { heading: '灵感来源', body: 'Saul Leiter 的色彩、Henri Cartier-Bresson 的决定性瞬间、Vivian Maier 的神秘自拍。他们的作品教会我：伟大的照片往往诞生于日常的角落。' },
+      ],
+    },
+    opensource: {
+      title: '开源', icon: '💻', color: '#B8A9D4',
+      intro: '相信开放和协作的力量。开源不仅是代码，更是一种文化和社区精神。',
+      sections: [
+        { heading: '参与的项目', body: '在 GitHub 上维护几个小型工具库，偶尔给感兴趣的仓库提 PR。喜欢写文档和改进开发者体验。' },
+        { heading: '理念', body: '好的开源项目解决真实的问题。比起完美的代码，清晰的文档和友好的社区更重要。每个人都应该能自由地学习、使用和改进软件。' },
+        { heading: '技术兴趣', body: 'TypeScript 类型体操、构建工具链优化、WebGL 创意编程。最近在学习 Rust 和 WebAssembly。' },
+      ],
+    },
+    hiking: {
+      title: '徒步', icon: '🥾', color: '#5A9FC0',
+      intro: '山野之间是最好的冥想空间。远离屏幕，只听到风、鸟鸣和自己的脚步声。',
+      sections: [
+        { heading: '常去的路线', body: '近郊的山脊线是最爱。往返 15 公里，爬升 800 米，刚好一天。沿途有松林、溪流和开阔的山顶视野。' },
+        { heading: '装备', body: '一双好的徒步鞋比什么都重要。背包里常备水、能量棒、急救包和一本口袋书。在山顶读书是奢侈的享受。' },
+        { heading: '感悟', body: '登山的过程像编程——每一步都算数，急不得。到达山顶的满足感很短暂，真正的收获在攀登的过程中。' },
+      ],
+    },
+    coffee: {
+      title: '咖啡', icon: '☕', color: '#F0C4C0',
+      intro: '从手冲到意式，每一杯咖啡都是一场微型实验——水温、研磨度、萃取时间……每个变量都在讲述不同的故事。',
+      sections: [
+        { heading: '冲煮方式', body: '日常最爱 V60 手冲，周末会用摩卡壶做一杯浓郁的"伪意式"。对拉花还处于"意外艺术"阶段——偶尔成功，多数时候是抽象派。' },
+        { heading: '豆子偏好', body: '偏爱埃塞俄比亚耶加雪菲的花果香和哥斯达黎加蜜处理的甜感。喜欢探索不同产地的风味轮，浅烘和中烘是日常。' },
+        { heading: '咖啡哲学', body: '冲咖啡是少数能让我完全专注当下的时刻。称豆、研磨、注水——每个动作都像仪式。这也许是最接近正念的日常实践。' },
+      ],
+    },
+    music: {
+      title: '音乐', icon: '🎸', color: '#C4A8D0',
+      intro: '音乐是时间的艺术。三分钟的旋律可以承载一生的情感。',
+      sections: [
+        { heading: '乐器', body: '弹吉他——木吉他为主，偶尔电吉他。正在自学键盘。喜欢即兴，不喜欢对着谱子弹。' },
+        { heading: '听什么', body: '从 Radiohead 到坂本龙一，从 Miles Davis 到 FKJ。Spotify 算法已经无法预测我的歌单——前一首可能是 Shoegaze，下一首是 Lo-Fi Hip Hop。' },
+        { heading: '音乐与代码', body: '写代码时听 Instrumental——无歌词的音乐不会干扰思维。Lo-Fi、Ambient、电影配乐是编码三件套。' },
+      ],
+    },
+  };
+
+  return Object.keys(hobbiesDetail).map((slug) => ({
+    params: { slug },
+    props: { hobby: hobbiesDetail[slug] },
+  }));
 }
 
-const { slug } = Astro.params;
-const hobby = slug ? hobbiesDetail[slug] : null;
-if (!hobby) return Astro.redirect('/hobbies');
+const { hobby } = Astro.props;
 ---
 
 <Base title={`${hobby.title} — Hobbies`} description={hobby.intro}>
