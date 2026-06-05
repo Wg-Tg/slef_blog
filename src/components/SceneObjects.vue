@@ -350,11 +350,15 @@ function createStarField(count: number) {
 
 // ---- 场景初始化 ----
 onMounted(() => {
-  if (!scene) return;
+  console.log('[SceneObjects] scene type:', typeof scene, 'has add:', typeof scene?.add);
+  if (!scene || typeof scene.add !== 'function') {
+    console.error('[SceneObjects] scene invalid:', scene);
+    return;
+  }
   prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const mobile = props.isMobile;
 
-  // 太阳光晕（程序化 sprite）
+  console.log('[SceneObjects] Adding sun glow...');
   scene.add(createSunGlow());
 
   // 轨道线
