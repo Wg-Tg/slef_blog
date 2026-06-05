@@ -35,6 +35,16 @@ const currentPath = Astro.url.pathname;
     <ClientRouter />
   </head>
   <body>
+    <script>
+      // 修复 View Transitions 导航时 body 背景不更新的问题
+      function updateBodyBg() {
+        const isHome = !!document.querySelector('.solar-system-wrapper');
+        document.body.style.background = isHome ? '#0B0A0A' : '';
+        document.body.style.overflow = isHome ? 'hidden' : '';
+      }
+      updateBodyBg();
+      document.addEventListener('astro:after-swap', updateBodyBg);
+    </script>
     <!-- 导航栏 -->
     {!hideNav && (
       <nav class="nav-bar">
