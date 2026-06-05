@@ -1,3 +1,25 @@
+<!--
+  SolarSystem.vue — 太阳系 3D 交互首页
+  ------------------------------------------------------------
+  使用 TresJS（Vue 3 的 Three.js 声明式封装）构建可交互太阳系场景。
+
+  核心功能：
+  - 太阳：暖金色球体 + 自发光材质 + 粒子光环
+  - 6 颗行星：各自在独立轨道上公转，速度递减（内快外慢）
+  - 轨道线：256 段半透明白色圆环
+  - 星点背景：球壳上随机分布 700 个（移动端 300 个）
+  - 交互：hover 行星放大至 1.15x + 浮动标签，click 触发 Astro 导航
+  - 相机：OrbitControls，支持拖拽旋转/缩放，自动缓动旋转
+  - 性能：requestAnimationFrame 驱动，useRenderLoop 钩子，unmount 自动清理
+  - 无障碍：prefers-reduced-motion 时停止所有动画
+
+  行星 → 路由映射：
+  水星→/blog | 金星→/notes | 地球→/hobbies | 火星→/about | 木星→/about | 土星→/
+
+  导航机制：
+  通过 CustomEvent('planet-click') 通知 Astro 页面，
+  index.astro 监听该事件并调用 navigate()，保留 View Transitions 过渡动画。
+-->
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, shallowRef } from 'vue';
 import { TresCanvas, useRenderLoop } from '@tresjs/core';

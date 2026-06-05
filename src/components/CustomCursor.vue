@@ -1,3 +1,17 @@
+<!--
+  CustomCursor.vue — 自定义鼠标光标
+  ------------------------------------------------------------
+  替换默认光标为朱红色圆点，仅桌面端显示。
+
+  特性：
+  - 20px 朱红圆点，混合模式 difference 实现颜色反转
+  - requestAnimationFrame + 缓动系数 0.1 实现平滑跟随
+  - 悬浮在链接/按钮上时放大至 40px，显示"阅读"文字
+  - 移动端/触摸设备自动隐藏（检测 hover:none + pointer:coarse）
+  - 组件卸载时清理所有事件监听和动画帧
+
+  注意：太阳系首页自动禁用此光标（3D 场景自带 grab/grabbing 光标样式）。
+-->
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
 
