@@ -62,12 +62,13 @@ html {
 
 body {
   margin: 0; padding: 0;
-  background: linear-gradient(175deg,
-    #FBF9F8 0%,
-    #F5F0F8 25%,
-    #F0F0FA 50%,
-    #F8F4F6 75%,
-    #FBF9F8 100%
+  background: linear-gradient(160deg,
+    #E8F0F8 0%,
+    #E8DDF0 20%,
+    #F0E0EC 40%,
+    #E0ECF5 60%,
+    #ECD8E8 80%,
+    #E8F0F8 100%
   );
   background-attachment: fixed;
   color: var(--color-text);
