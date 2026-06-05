@@ -1,5 +1,5 @@
 ---
-import { ViewTransitions } from 'astro:transitions';
+import { ClientRouter } from 'astro:transitions';
 import CustomCursor from '../components/CustomCursor.vue';
 
 export interface Props {
@@ -40,7 +40,7 @@ const currentPath = Astro.url.pathname;
     <!-- Global Styles -->
     <link rel="stylesheet" href="/src/styles/global.css" />
 
-    <ViewTransitions />
+    <ClientRouter />
   </head>
   <body>
     <!-- Custom Cursor (desktop only) -->

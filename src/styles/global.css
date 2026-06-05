@@ -1,3 +1,6 @@
+/* ---- Google Fonts ---- */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
 /* ========================================
    新粗野主义 × 纸媒体质感 — 全局样式
    Neo-Brutalism × Paper Texture Design System
@@ -42,8 +45,6 @@
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* ---- Google Fonts Import ---- */
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap');
 
 /* ---- Reset & Base ---- */
 *,

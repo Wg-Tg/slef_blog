@@ -8,17 +8,14 @@ import SolarSystem from '../components/SolarSystem.vue';
 </Base>
 
 <script>
-  // Listen for planet-click events from SolarSystem and use navigate() for View Transitions
+  import { navigate } from 'astro:transitions/client';
+
+  // 监听 SolarSystem 发出的 planet-click 事件，使用 navigate() 导航保留过渡动画
   document.addEventListener('planet-click', ((e: CustomEvent) => {
     const url = e.detail?.url;
     if (url && typeof url === 'string') {
       document.documentElement.classList.add('solar-exit');
-      // @ts-ignore — navigate() is available globally when View Transitions are enabled
-      if (typeof window.navigate === 'function') {
-        window.navigate(url);
-      } else {
-        window.location.href = url;
-      }
+      navigate(url);
     }
   }) as EventListener);
 </script>
