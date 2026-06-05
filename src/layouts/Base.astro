@@ -1,5 +1,6 @@
 ---
 import { ClientRouter } from 'astro:transitions';
+import CursorSparkles from '../components/CursorSparkles.vue';
 import '../styles/global.css';
 
 export interface Props {
@@ -45,6 +46,9 @@ const currentPath = Astro.url.pathname;
       updateBodyBg();
       document.addEventListener('astro:after-swap', updateBodyBg);
     </script>
+    <!-- 光标星星拖尾（仅桌面端内容页） -->
+    <CursorSparkles client:only="vue" />
+
     <!-- 导航栏 -->
     {!hideNav && (
       <nav class="nav-bar">
