@@ -2,14 +2,13 @@
 import Base from '../layouts/Base.astro';
 import ScrollReveal from '../components/ScrollReveal.vue';
 
-// TODO: REPLACE_ME — 替换为你的真实爱好
 const hobbies = [
-  { title: '阅读', desc: '小说、哲学、技术——纸质书的触感无法替代。', icon: '📚', color: '#7EB8DA' },
-  { title: '摄影', desc: '用镜头捕捉光线与瞬间，偏爱街拍和黑白。', icon: '📷', color: '#D4A5C4' },
-  { title: '开源', desc: '在 GitHub 上参与有趣的项目，代码改变世界。', icon: '💻', color: '#B8A9D4' },
-  { title: '徒步', desc: '山野之间是最好的冥想空间。', icon: '🥾', color: '#5A9FC0' },
-  { title: '咖啡', desc: '从手冲到意式，每一杯都是仪式感。', icon: '☕', color: '#F0C4C0' },
-  { title: '音乐', desc: '吉他、合成器、以及无尽的播放列表。', icon: '🎸', color: '#C4A8D0' },
+  { title: '阅读', slug: 'reading', desc: '小说、哲学、技术——纸质书的触感无法替代。', icon: '📚', color: '#7EB8DA' },
+  { title: '摄影', slug: 'photography', desc: '用镜头捕捉光线与瞬间，偏爱街拍和黑白。', icon: '📷', color: '#D4A5C4' },
+  { title: '开源', slug: 'opensource', desc: '在 GitHub 上参与有趣的项目，代码改变世界。', icon: '💻', color: '#B8A9D4' },
+  { title: '徒步', slug: 'hiking', desc: '山野之间是最好的冥想空间。', icon: '🥾', color: '#5A9FC0' },
+  { title: '咖啡', slug: 'coffee', desc: '从手冲到意式，每一杯都是仪式感。', icon: '☕', color: '#F0C4C0' },
+  { title: '音乐', slug: 'music', desc: '吉他、合成器、以及无尽的播放列表。', icon: '🎸', color: '#C4A8D0' },
 ];
 ---
 
@@ -23,13 +22,14 @@ const hobbies = [
     <div class="hobby-grid">
       {hobbies.map((h, i) => (
         <ScrollReveal client:load delay={i * 0.06}>
-          <div class="hobby-card">
+          <a href={`/hobbies/${h.slug}`} class="hobby-card">
             <div class="hobby-icon" style={`background: ${h.color}15; color: ${h.color}`}>
               {h.icon}
             </div>
             <h3>{h.title}</h3>
             <p>{h.desc}</p>
-          </div>
+            <span class="hobby-arrow">→</span>
+          </a>
         </ScrollReveal>
       ))}
     </div>
@@ -46,18 +46,25 @@ const hobbies = [
     gap: 1.25rem;
   }
   .hobby-card {
+    display: block;
     background: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
     padding: 1.75rem;
     text-align: center;
+    text-decoration: none;
+    color: var(--color-text);
     transition: all 0.3s var(--ease-out);
     box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
   }
   .hobby-card:hover {
     box-shadow: var(--shadow-hover);
     transform: translateY(-2px);
     border-color: var(--color-accent);
+    text-decoration: none;
+    color: var(--color-text);
   }
   .hobby-icon {
     width: 3.5rem; height: 3.5rem;
@@ -75,5 +82,14 @@ const hobbies = [
     font-size: 0.85rem; color: var(--color-text-light);
     line-height: 1.6; margin: 0;
     font-weight: 300;
+  }
+  .hobby-arrow {
+    display: inline-block; margin-top: 0.75rem;
+    font-size: 0.85rem; color: var(--color-accent);
+    opacity: 0; transform: translateX(-4px);
+    transition: all 0.25s var(--ease-out);
+  }
+  .hobby-card:hover .hobby-arrow {
+    opacity: 1; transform: translateX(0);
   }
 </style>
