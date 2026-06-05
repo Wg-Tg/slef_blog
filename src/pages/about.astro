@@ -5,20 +5,11 @@ import ScrollReveal from '../components/ScrollReveal.vue';
 // TODO: REPLACE_ME — 替换为你的个人信息
 const siteOwner = {
   name: 'Your Name',
-  tagline: '一个在数字宇宙中探索的人。',
-  avatar: '/placeholder-avatar.svg',
+  tagline: '写代码、拍照片、探索世界。',
   skills: ['TypeScript', 'Vue.js', 'React', 'Node.js', 'Python', 'Figma'],
   projects: [
-    {
-      title: 'Project Alpha',
-      description: 'An open-source tool for developers.',
-      url: 'https://github.com/WG-TG',
-    },
-    {
-      title: 'Project Beta',
-      description: 'A creative web experiment with WebGL.',
-      url: 'https://github.com/WG-TG',
-    },
+    { title: 'Project Alpha', desc: 'An open-source developer tool.', url: 'https://github.com/WG-TG' },
+    { title: 'Project Beta', desc: 'A creative WebGL experiment.', url: 'https://github.com/WG-TG' },
   ],
   social: [
     { label: 'GitHub', url: 'https://github.com/WG-TG' },
@@ -30,72 +21,57 @@ const siteOwner = {
 
 <Base title="About" description="关于我">
   <div class="content-container py-16">
-    <!-- Section: Avatar & Intro -->
+    <!-- 头像 + 简介 -->
     <ScrollReveal client:load>
-      <section class="mb-16">
-        <div class="flex flex-col sm:flex-row items-start gap-8">
-          <!-- Avatar Placeholder -->
-          <div class="w-32 h-32 flex-shrink-0 bg-muted/20 border-2 border-border shadow-[6px_6px_0px_#2B2B2B] flex items-center justify-center overflow-hidden">
-            <!-- TODO: REPLACE_ME — replace with your real avatar image -->
-            <svg viewBox="0 0 100 100" class="w-full h-full">
-              <rect width="100" height="100" fill="#E5E5E5" />
-              <circle cx="50" cy="38" r="16" fill="#9E9E9E" />
-              <ellipse cx="50" cy="78" rx="24" ry="20" fill="#9E9E9E" />
-            </svg>
-          </div>
+      <div class="about-hero">
+        <div class="avatar-box">
+          <!-- TODO: REPLACE_ME — 替换头像图片 -->
+          <svg viewBox="0 0 100 100" class="avatar-svg">
+            <rect width="100" height="100" rx="20" fill="#F0EDEB"/>
+            <circle cx="50" cy="38" r="16" fill="#D4C8C0"/>
+            <ellipse cx="50" cy="78" rx="24" ry="20" fill="#D4C8C0"/>
+          </svg>
+        </div>
+        <div>
+          <h1 class="about-name">{siteOwner.name}</h1>
+          <p class="about-tagline">{siteOwner.tagline}</p>
+        </div>
+      </div>
+    </ScrollReveal>
 
-          <div>
-            <h1 class="text-4xl! sm:text-4.5rem! mb-2">{siteOwner.name}</h1>
-            <p class="text-muted text-lg m-0">{siteOwner.tagline}</p>
-          </div>
+    <!-- 技能 -->
+    <ScrollReveal client:load :delay="0.1">
+      <section class="mt-16">
+        <h2 class="section-title">Skills</h2>
+        <div class="skill-cloud">
+          {siteOwner.skills.map((s) => <span class="skill-badge">{s}</span>)}
         </div>
       </section>
     </ScrollReveal>
 
-    <!-- Section: Skills -->
-    <ScrollReveal client:load delay={0.1}>
-      <section class="mb-16">
-        <h2 class="mb-6">Skills</h2>
-        <div class="flex flex-wrap gap-3">
-          {siteOwner.skills.map((skill) => (
-            <span class="skill-tag">
-              {skill}
-            </span>
-          ))}
-        </div>
-      </section>
-    </ScrollReveal>
-
-    <!-- Section: Projects -->
-    <ScrollReveal client:load delay={0.2}>
-      <section class="mb-16">
-        <h2 class="mb-6">Projects</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {siteOwner.projects.map((project) => (
-            <a href={project.url} target="_blank" rel="noopener" class="card card-hover no-underline! text-text">
-              <h3 class="text-lg! mb-2">{project.title}</h3>
-              <p class="text-muted text-sm m-0">{project.description}</p>
-              <span class="inline-block mt-3 font-mono text-xs text-accent">→ View Project</span>
+    <!-- 项目 -->
+    <ScrollReveal client:load :delay="0.15">
+      <section class="mt-16">
+        <h2 class="section-title">Projects</h2>
+        <div class="project-grid">
+          {siteOwner.projects.map((p) => (
+            <a href={p.url} target="_blank" rel="noopener" class="project-card">
+              <h3 class="project-title">{p.title}</h3>
+              <p class="project-desc">{p.desc}</p>
+              <span class="project-link">→ 查看项目</span>
             </a>
           ))}
         </div>
       </section>
     </ScrollReveal>
 
-    <!-- Section: Social Links -->
-    <ScrollReveal client:load delay={0.3}>
-      <section>
-        <h2 class="mb-6">Connect</h2>
-        <div class="flex flex-wrap gap-6">
-          {siteOwner.social.map((link) => (
-            <a
-              href={link.url}
-              target="_blank"
-              rel="noopener"
-              class="social-link"
-            >
-              {link.label}
-            </a>
+    <!-- 社交 -->
+    <ScrollReveal client:load :delay="0.2">
+      <section class="mt-16">
+        <h2 class="section-title">Connect</h2>
+        <div class="social-links">
+          {siteOwner.social.map((l) => (
+            <a href={l.url} target="_blank" rel="noopener" class="social-link">{l.label}</a>
           ))}
         </div>
       </section>
@@ -104,52 +80,101 @@ const siteOwner = {
 </Base>
 
 <style>
-  .skill-tag {
-    font-family: var(--font-mono, monospace);
-    font-size: 0.85rem;
-    font-weight: 500;
-    padding: 6px 16px;
-    border: 2px solid var(--color-accent, #E63946);
-    background: var(--color-surface, #FFFFFF);
-    color: var(--color-text, #1A1A1A);
-    transition: all 0.15s ease;
+  .about-hero {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .avatar-box {
+    width: 7rem; height: 7rem;
+    flex-shrink: 0;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    background: linear-gradient(135deg, #F5F0F0 0%, #EDE8F0 100%);
+  }
+  .avatar-svg { width: 100%; height: 100%; display: block; }
+  .about-name {
+    font-size: 2.8rem; margin-bottom: 0.25rem;
+    background: linear-gradient(135deg, var(--color-text) 0%, var(--color-accent-deep) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .about-tagline {
+    color: var(--color-text-light);
+    font-size: 1.1rem; margin: 0; font-weight: 300;
+  }
+  .section-title {
+    font-size: 1.4rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--color-border-light);
+    color: var(--color-accent-deep);
+  }
+  .skill-cloud {
+    display: flex; flex-wrap: wrap; gap: 0.6rem;
+  }
+  .skill-badge {
+    font-size: 0.85rem; font-weight: 400;
+    padding: 0.45rem 1rem;
+    border-radius: 2rem;
+    background: linear-gradient(135deg, rgba(126,184,218,0.12) 0%, rgba(184,169,212,0.12) 100%);
+    color: var(--color-accent-deep);
+    border: 1px solid rgba(126,184,218,0.2);
+    transition: all 0.2s;
     cursor: default;
-    user-select: none;
   }
-
-  .skill-tag:hover {
-    background: var(--color-accent, #E63946);
-    color: #FFFFFF;
+  .skill-badge:hover {
+    background: linear-gradient(135deg, rgba(126,184,218,0.2) 0%, rgba(184,169,212,0.2) 100%);
+    border-color: var(--color-accent);
+    transform: translateY(-1px);
   }
-
+  .project-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;
+  }
+  .project-card {
+    display: block;
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    text-decoration: none;
+    color: var(--color-text);
+    transition: all 0.3s var(--ease-out);
+    box-shadow: var(--shadow-sm);
+  }
+  .project-card:hover {
+    box-shadow: var(--shadow-hover);
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
+    text-decoration: none;
+  }
+  .project-title {
+    font-size: 1.1rem; font-weight: 600; margin-bottom: 0.4rem;
+    font-family: var(--font-body);
+  }
+  .project-desc {
+    color: var(--color-text-light); font-size: 0.9rem; margin-bottom: 0.75rem;
+  }
+  .project-link {
+    font-size: 0.85rem; color: var(--color-accent-deep); font-weight: 500;
+  }
+  .social-links {
+    display: flex; flex-wrap: wrap; gap: 1.5rem;
+  }
   .social-link {
-    font-family: var(--font-heading, 'DM Sans', sans-serif);
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--color-text, #1A1A1A);
-    text-decoration: none;
-    position: relative;
+    font-size: 1rem; font-weight: 500;
+    color: var(--color-text);
     padding-bottom: 2px;
-    transition: color 0.2s ease;
-  }
-
-  .social-link::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 0;
-    height: 2px;
-    background: var(--color-accent, #E63946);
-    transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .social-link:hover {
-    color: var(--color-accent, #E63946);
+    border-bottom: 1.5px solid var(--color-accent-pink);
+    transition: all 0.2s;
     text-decoration: none;
   }
-
-  .social-link:hover::after {
-    width: 100%;
+  .social-link:hover {
+    color: var(--color-accent-purple);
+    border-bottom-color: var(--color-accent-purple);
+    text-decoration: none;
   }
 </style>

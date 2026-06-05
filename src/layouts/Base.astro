@@ -1,6 +1,5 @@
 ---
 import { ClientRouter } from 'astro:transitions';
-import CustomCursor from '../components/CustomCursor.vue';
 import '../styles/global.css';
 
 export interface Props {
@@ -28,48 +27,30 @@ const currentPath = Astro.url.pathname;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-
-    <!-- Primary Meta -->
-    <title>{title ? `${title} — My Space` : 'My Space — Personal Blog'}</title>
+    <title>{title ? `${title} — My Space` : 'My Space'}</title>
     {description && <meta name="description" content={description} />}
-
-    <!-- Open Graph -->
     <meta property="og:title" content={title || 'My Space'} />
     {description && <meta property="og:description" content={description} />}
     <meta property="og:type" content="website" />
-
     <ClientRouter />
   </head>
   <body>
-    <!-- Custom Cursor (desktop only) -->
-    <CustomCursor client:only="vue" />
-
-    <!-- Navigation -->
+    <!-- 导航栏 -->
     {!hideNav && (
-      <nav class="sticky top-0 z-50 bg-bg/95 backdrop-blur-[2px]" style="border-bottom: 2px solid var(--color-border);">
-        <div class="content-container flex items-center justify-between h-16">
-          <!-- Site Title -->
-          <a
-            href="/"
-            class="no-underline! text-text font-heading text-xl font-900 tracking-[-0.02em] hover:text-accent transition-colors duration-200"
-          >
+      <nav class="nav-bar">
+        <div class="content-container nav-inner">
+          <a href="/" class="nav-logo">
             <!-- TODO: REPLACE_ME — 你的网站标题 -->
             My Space
           </a>
-
-          <!-- Nav Links -->
-          <ul class="flex items-center gap-1 list-none m-0 p-0">
+          <ul class="nav-links">
             {navLinks.map((link) => {
               const isActive = currentPath.startsWith(link.href);
               return (
                 <li>
                   <a
                     href={link.href}
-                    class={`no-underline! font-heading text-sm font-500 px-3 py-2 transition-colors duration-200 border-b-2 ${
-                      isActive
-                        ? 'text-accent border-accent'
-                        : 'text-muted border-transparent hover:text-text hover:border-border'
-                    }`}
+                    class={`nav-link ${isActive ? 'active' : ''}`}
                   >
                     {link.label}
                   </a>
@@ -81,20 +62,94 @@ const currentPath = Astro.url.pathname;
       </nav>
     )}
 
-    <!-- Main Content -->
+    <!-- 主内容 -->
     <main>
       <slot />
     </main>
 
-    <!-- Footer -->
+    <!-- 页脚 -->
     {!hideNav && (
-      <footer class="border-t-2 border-border mt-20 py-10">
+      <footer class="footer">
         <div class="content-container text-center">
-          <p class="text-muted text-sm m-0">
-            &copy; {new Date().getFullYear()} My Space. Powered by Astro.
+          <p class="footer-text">
+            &copy; {new Date().getFullYear()} My Space &middot; Crafted with care
           </p>
         </div>
       </footer>
     )}
   </body>
 </html>
+
+<style is:global>
+  /* ---- 导航栏 ---- */
+  .nav-bar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(251, 249, 248, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 3.5rem;
+  }
+  .nav-logo {
+    font-family: var(--font-heading);
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--color-text);
+    text-decoration: none;
+    letter-spacing: -0.01em;
+    transition: color 0.2s;
+  }
+  .nav-logo:hover {
+    color: var(--color-accent-deep);
+    text-decoration: none;
+  }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .nav-link {
+    display: block;
+    padding: 0.4rem 0.9rem;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--color-text-light);
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.2s;
+  }
+  .nav-link:hover {
+    color: var(--color-accent-deep);
+    background: rgba(126, 184, 218, 0.08);
+    text-decoration: none;
+  }
+  .nav-link.active {
+    color: var(--color-accent-deep);
+    background: rgba(126, 184, 218, 0.12);
+    font-weight: 500;
+  }
+
+  /* ---- 页脚 ---- */
+  .footer {
+    border-top: 1px solid var(--color-border-light);
+    padding: 2.5rem 0;
+    margin-top: 4rem;
+  }
+  .footer-text {
+    color: var(--color-text-light);
+    font-size: 0.85rem;
+    margin: 0;
+    font-weight: 300;
+  }
+</style>

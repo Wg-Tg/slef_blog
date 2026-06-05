@@ -1,14 +1,11 @@
 ---
-import { getCollection, getEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import ScrollReveal from '../../components/ScrollReveal.vue';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
-  return posts.map((post) => ({
-    params: { slug: post.slug },
-    props: { post },
-  }));
+  return posts.map((post) => ({ params: { slug: post.slug }, props: { post } }));
 }
 
 const { post } = Astro.props;
@@ -17,134 +14,103 @@ const { Content } = await post.render();
 
 <Base title={post.data.title} description={post.data.description}>
   <div class="content-container py-16">
-    <!-- Article Header -->
     <ScrollReveal client:load>
-      <header class="mb-12">
-        <!-- Tags -->
-        {
-          post.data.tags && post.data.tags.length > 0 && (
-            <div class="flex flex-wrap gap-1.5 mb-4">
-              {post.data.tags.map((tag) => (
-                <span class="text-xs font-mono text-muted border border-border px-2 py-0.5 rounded-sm">
-                  #{tag}
-                </span>
-              ))}
-            </div>
-          )
-        }
-
-        <h1 class="mb-3">{post.data.title}</h1>
-        <p class="text-muted text-lg mb-4">{post.data.description}</p>
-        <time
-          class="font-mono text-sm text-muted"
-          datetime={post.data.date.toISOString()}
-        >
-          {post.data.date.toLocaleDateString('zh-CN', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-          })}
+      <header class="article-header">
+        {post.data.tags && post.data.tags.length > 0 && (
+          <div class="article-tags">
+            {post.data.tags.map((t) => <span class="article-tag">#{t}</span>)}
+          </div>
+        )}
+        <h1 class="article-title">{post.data.title}</h1>
+        <p class="article-desc">{post.data.description}</p>
+        <time class="article-date" datetime={post.data.date.toISOString()}>
+          {post.data.date.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' })}
         </time>
       </header>
     </ScrollReveal>
 
-    <!-- Article Content -->
-    <ScrollReveal client:load delay={0.15}>
+    <ScrollReveal client:load :delay="0.1">
       <article class="prose">
         <Content />
       </article>
     </ScrollReveal>
 
-    <!-- Divider -->
-    <hr class="my-12" />
+    <hr />
 
-    <!-- Giscus Comments -->
-    <ScrollReveal client:load delay={0.3}>
-      <div id="comments" class="mt-12">
-        <h3 class="font-heading text-lg mb-4">Comments</h3>
-        <p class="text-muted text-sm">
-          Loading comments...
-        </p>
+    <ScrollReveal client:load :delay="0.2">
+      <div id="comments">
+        <h3 class="comment-heading">Comments</h3>
+        <p class="comment-placeholder">Loading comments...</p>
       </div>
     </ScrollReveal>
   </div>
 </Base>
 
-<!-- Giscus Script (client-side only) -->
 <script>
   if (typeof window !== 'undefined') {
-    const script = document.createElement('script');
-    script.src = 'https://giscus.app/client.js';
-    script.setAttribute('data-repo', 'WG-TG/slef_blog');
-    script.setAttribute('data-repo-id', 'R_kgDOO'); // TODO: REPLACE_ME — get your repo ID from Giscus setup
-    script.setAttribute('data-category', 'Announcements');
-    script.setAttribute('data-category-id', 'DIC_kwDOO'); // TODO: REPLACE_ME — get your category ID
-    script.setAttribute('data-mapping', 'pathname');
-    script.setAttribute('data-strict', '0');
-    script.setAttribute('data-reactions-enabled', '1');
-    script.setAttribute('data-emit-metadata', '0');
-    script.setAttribute('data-input-position', 'bottom');
-    script.setAttribute('data-theme', 'light');
-    script.setAttribute('data-lang', 'zh-CN');
-    script.setAttribute('crossorigin', 'anonymous');
-    script.async = true;
-    script.onload = () => {
-      const commentsDiv = document.getElementById('comments');
-      if (commentsDiv) {
-        commentsDiv.querySelector('p')?.remove();
-      }
-    };
-    document.getElementById('comments')?.appendChild(script);
+    const s = document.createElement('script');
+    s.src = 'https://giscus.app/client.js';
+    s.setAttribute('data-repo', 'WG-TG/slef_blog');
+    s.setAttribute('data-repo-id', 'R_kgDOO');     // TODO: REPLACE_ME
+    s.setAttribute('data-category', 'Announcements');
+    s.setAttribute('data-category-id', 'DIC_kwDOO'); // TODO: REPLACE_ME
+    s.setAttribute('data-mapping', 'pathname');
+    s.setAttribute('data-strict', '0');
+    s.setAttribute('data-reactions-enabled', '1');
+    s.setAttribute('data-emit-metadata', '0');
+    s.setAttribute('data-input-position', 'bottom');
+    s.setAttribute('data-theme', 'light');
+    s.setAttribute('data-lang', 'zh-CN');
+    s.setAttribute('crossorigin', 'anonymous');
+    s.async = true;
+    s.onload = () => { document.querySelector('#comments .comment-placeholder')?.remove(); };
+    document.getElementById('comments')?.appendChild(s);
   }
 </script>
 
 <style>
-  /* Prose styling for article content */
-  article.prose {
-    font-family: var(--font-body, Georgia, serif);
-    font-size: 1.1rem;
-    line-height: 1.9;
+  .article-header { margin-bottom: 2.5rem; }
+  .article-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.75rem; }
+  .article-tag {
+    font-family: var(--font-mono); font-size: 0.72rem;
+    color: var(--color-accent-purple);
+    background: rgba(184,169,212,0.1);
+    padding: 0.15rem 0.5rem; border-radius: 4px;
+  }
+  .article-title { margin-bottom: 0.5rem; }
+  .article-desc {
+    color: var(--color-text-light); font-size: 1.1rem;
+    margin-bottom: 0.5rem; font-weight: 300;
+  }
+  .article-date {
+    font-family: var(--font-mono); font-size: 0.8rem; color: var(--color-text-light);
+  }
+  .comment-heading {
+    font-family: var(--font-body); font-size: 1.1rem;
+    font-weight: 600; margin-bottom: 1rem;
+  }
+  .comment-placeholder {
+    color: var(--color-text-light); font-size: 0.9rem;
   }
 
-  article.prose h2 {
-    margin-top: 2.5rem;
-    margin-bottom: 1rem;
+  /* Prose */
+  .prose {
+    font-size: 1.05rem; line-height: 1.9; color: var(--color-text);
   }
-
-  article.prose h3 {
-    margin-top: 2rem;
-    margin-bottom: 0.75rem;
+  .prose :global(h2) { margin-top: 2.5rem; margin-bottom: 0.75rem; }
+  .prose :global(h3) { margin-top: 2rem; margin-bottom: 0.5rem; }
+  .prose :global(p) { margin-bottom: 1.5em; }
+  .prose :global(ul), .prose :global(ol) { padding-left: 1.5rem; margin-bottom: 1.5em; }
+  .prose :global(li) { margin-bottom: 0.3em; }
+  .prose :global(pre) { margin: 1.5rem 0; }
+  .prose :global(blockquote) {
+    font-style: italic; border-left: 3px solid var(--color-accent-pink);
+    padding: 0.5rem 1rem; margin: 1.5rem 0;
+    background: linear-gradient(135deg, rgba(212,165,196,0.06) 0%, rgba(184,169,212,0.06) 100%);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
   }
-
-  article.prose p {
-    margin-bottom: 1.5em;
-  }
-
-  article.prose ul,
-  article.prose ol {
-    padding-left: 1.5rem;
-    margin-bottom: 1.5em;
-  }
-
-  article.prose li {
-    margin-bottom: 0.35em;
-  }
-
-  article.prose img {
-    margin: 2rem auto;
-    border: var(--border-default);
-    box-shadow: var(--shadow-hard);
-  }
-
-  article.prose pre {
-    margin: 1.5rem 0;
-  }
-
-  article.prose blockquote {
-    font-style: italic;
-    border-left: 4px solid var(--color-accent, #E63946);
-    padding-left: 1.25rem;
-    margin: 1.5rem 0;
-    color: var(--color-muted, #6B6B6B);
+  .prose :global(img) {
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
   }
 </style>

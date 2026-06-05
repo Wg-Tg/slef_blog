@@ -4,35 +4,76 @@ import ScrollReveal from '../components/ScrollReveal.vue';
 
 // TODO: REPLACE_ME — 替换为你的真实爱好
 const hobbies = [
-  { title: '阅读', description: '小说、哲学、技术书籍，纸质书的触感无法替代。', emoji: '📚' },
-  { title: '摄影', description: '用镜头捕捉光线与瞬间。喜欢街拍和黑白摄影。', emoji: '📷' },
-  { title: '开源贡献', description: '在 GitHub 上参与有趣的项目，让代码改变世界。', emoji: '💻' },
-  { title: '徒步', description: '山野之间是最好的冥想空间。', emoji: '🥾' },
-  { title: '咖啡', description: '从手冲到意式，每一杯都是仪式。', emoji: '☕' },
-  { title: '音乐', description: '吉他、合成器、以及无尽的播放列表。', emoji: '🎸' },
+  { title: '阅读', desc: '小说、哲学、技术——纸质书的触感无法替代。', icon: '📚', color: '#7EB8DA' },
+  { title: '摄影', desc: '用镜头捕捉光线与瞬间，偏爱街拍和黑白。', icon: '📷', color: '#D4A5C4' },
+  { title: '开源', desc: '在 GitHub 上参与有趣的项目，代码改变世界。', icon: '💻', color: '#B8A9D4' },
+  { title: '徒步', desc: '山野之间是最好的冥想空间。', icon: '🥾', color: '#5A9FC0' },
+  { title: '咖啡', desc: '从手冲到意式，每一杯都是仪式感。', icon: '☕', color: '#F0C4C0' },
+  { title: '音乐', desc: '吉他、合成器、以及无尽的播放列表。', icon: '🎸', color: '#C4A8D0' },
 ];
 ---
 
 <Base title="Hobbies" description="我的爱好">
   <div class="content-container py-16">
-    <ScrollReveal client:load>
-      <h1 class="mb-2">Hobbies</h1>
-      <p class="text-muted text-lg mb-12">工作之外的我是这样的。</p>
-    </ScrollReveal>
+    <div class="page-header">
+      <h1>Hobbies</h1>
+      <p>工作之外，这些是我热爱的事。</p>
+    </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {hobbies.map((hobby, i) => (
-        <ScrollReveal client:load delay={i * 0.08}>
-          <div class="card card-hover h-full flex flex-col">
-            <!-- Image Placeholder -->
-            <div class="w-full h-40 bg-muted/20 border-2 border-border mb-4 flex items-center justify-center">
-              <span class="text-4xl select-none">{hobby.emoji}</span>
+    <div class="hobby-grid">
+      {hobbies.map((h, i) => (
+        <ScrollReveal client:load delay={i * 0.06}>
+          <div class="hobby-card">
+            <div class="hobby-icon" style={`background: ${h.color}15; color: ${h.color}`}>
+              {h.icon}
             </div>
-            <h3 class="text-lg! mb-2">{hobby.title}</h3>
-            <p class="text-muted text-sm m-0 flex-1">{hobby.description}</p>
+            <h3>{h.title}</h3>
+            <p>{h.desc}</p>
           </div>
         </ScrollReveal>
       ))}
     </div>
   </div>
 </Base>
+
+<style>
+  .page-header { margin-bottom: 3rem; }
+  .page-header h1 { margin-bottom: 0.3rem; }
+  .page-header p { color: var(--color-text-light); font-size: 1.1rem; font-weight: 300; }
+  .hobby-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.25rem;
+  }
+  .hobby-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 1.75rem;
+    text-align: center;
+    transition: all 0.3s var(--ease-out);
+    box-shadow: var(--shadow-sm);
+  }
+  .hobby-card:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
+    border-color: var(--color-accent);
+  }
+  .hobby-icon {
+    width: 3.5rem; height: 3.5rem;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem;
+    margin: 0 auto 1rem;
+  }
+  .hobby-card h3 {
+    font-family: var(--font-body);
+    font-size: 1rem; font-weight: 600;
+    margin-bottom: 0.4rem;
+  }
+  .hobby-card p {
+    font-size: 0.85rem; color: var(--color-text-light);
+    line-height: 1.6; margin: 0;
+    font-weight: 300;
+  }
+</style>
