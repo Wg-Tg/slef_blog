@@ -39,7 +39,7 @@ const tabs = [
   { key: 'github', label: 'GitHub' },
 ];
 
-const activeTab = ref('qq');
+const activeTab = ref(tabs[0].key);
 </script>
 
 <style scoped>

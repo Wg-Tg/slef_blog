@@ -40,6 +40,7 @@ const props = withDefaults(
 
 const wrapper = ref<HTMLElement | null>(null);
 let st: ScrollTrigger | null = null;
+let animated = false;
 
 onMounted(() => {
   if (typeof window === 'undefined' || !wrapper.value) return;
@@ -72,7 +73,8 @@ onMounted(() => {
   });
 
   function animateIn() {
-    if (!wrapper.value) return;
+    if (!wrapper.value || animated) return;
+    animated = true;
     gsap.fromTo(
       wrapper.value,
       { opacity: 0, y: 40 },

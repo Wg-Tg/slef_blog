@@ -29,7 +29,11 @@ const { post } = Astro.props;
     </ScrollReveal>
 
     <ScrollReveal client:load :delay="0.1">
-      <article class="prose" set:html={post.rendered?.html || post.body} />
+      {post.rendered?.html ? (
+        <article class="prose" set:html={post.rendered.html} />
+      ) : (
+        <p class="no-content">内容暂不可用。</p>
+      )}
     </ScrollReveal>
 
     <hr />
@@ -92,6 +96,9 @@ const { post } = Astro.props;
     padding: 0.5rem 1rem; margin: 1.5rem 0;
     background: linear-gradient(135deg, rgba(212,165,196,0.06) 0%, rgba(184,169,212,0.06) 100%);
     border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  }
+  .no-content {
+    color: var(--color-text-light); font-style: italic; padding: 2rem 0;
   }
   .prose :global(img) {
     border-radius: var(--radius-md);
