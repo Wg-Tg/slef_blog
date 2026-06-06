@@ -41,6 +41,7 @@ const props = withDefaults(
 const wrapper = ref<HTMLElement | null>(null);
 let st: ScrollTrigger | null = null;
 let animated = false;
+let safetyTimer: ReturnType<typeof setTimeout> | null = null;
 
 onMounted(() => {
   if (typeof window === 'undefined' || !wrapper.value) return;
@@ -48,7 +49,6 @@ onMounted(() => {
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   if (prefersReducedMotion) {
-    // Just show content immediately
     if (wrapper.value) {
       wrapper.value.style.opacity = '1';
       wrapper.value.style.transform = 'none';
@@ -63,18 +63,29 @@ onMounted(() => {
     onEnter: () => animateIn(),
   });
 
-  // 兜底：View Transitions 场景下元素可能已在视口内
+  // 双重 RAF 确保 View Transitions 后布局完全稳定再检测视口
   requestAnimationFrame(() => {
-    if (!wrapper.value) return;
-    const rect = wrapper.value.getBoundingClientRect();
-    if (rect.top < window.innerHeight && rect.bottom > 0) {
-      animateIn();
-    }
+    requestAnimationFrame(() => {
+      if (!wrapper.value || animated) return;
+      const rect = wrapper.value.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        animateIn();
+      }
+    });
   });
+
+  // 安全兜底：2 秒后无论如何强制显示，防止内容永远不可见
+  safetyTimer = setTimeout(() => {
+    if (!animated && wrapper.value) {
+      wrapper.value.style.opacity = '1';
+      wrapper.value.style.transform = 'none';
+    }
+  }, 2000);
 
   function animateIn() {
     if (!wrapper.value || animated) return;
     animated = true;
+    if (safetyTimer) { clearTimeout(safetyTimer); safetyTimer = null; }
     gsap.fromTo(
       wrapper.value,
       { opacity: 0, y: 40 },
@@ -85,6 +96,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   if (st) st.kill();
+  if (safetyTimer) clearTimeout(safetyTimer);
 });
 </script>
 

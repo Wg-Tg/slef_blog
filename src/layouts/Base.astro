@@ -46,10 +46,11 @@ const currentPath = Astro.url.pathname;
       updateBodyBg();
       document.addEventListener('astro:after-swap', () => {
         updateBodyBg();
-        // 修复 View Transitions 后 ScrollTrigger 不触发的问题
-        requestAnimationFrame(() => {
+        // 延迟刷新 ScrollTrigger，等待 Vue 组件完成挂载
+        // requestAnimationFrame 太早——此时 Vue 还未 hydrate
+        setTimeout(() => {
           if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
-        });
+        }, 200);
       });
     </script>
     <!-- 光标星星拖尾（仅桌面端内容页） -->
