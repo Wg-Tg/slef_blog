@@ -28,9 +28,9 @@ const currentPath = Astro.url.pathname;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <title>{title ? `${title} — My Space` : 'My Space'}</title>
+    <title>{title ? `${title} — WG-TG` : 'WG-TG'}</title>
     {description && <meta name="description" content={description} />}
-    <meta property="og:title" content={title || 'My Space'} />
+    <meta property="og:title" content={title || 'WG-TG'} />
     {description && <meta property="og:description" content={description} />}
     <meta property="og:type" content="website" />
     <ClientRouter />
@@ -44,7 +44,13 @@ const currentPath = Astro.url.pathname;
         document.body.style.overflow = isHome ? 'hidden' : '';
       }
       updateBodyBg();
-      document.addEventListener('astro:after-swap', updateBodyBg);
+      document.addEventListener('astro:after-swap', () => {
+        updateBodyBg();
+        // 修复 View Transitions 后 ScrollTrigger 不触发的问题
+        requestAnimationFrame(() => {
+          if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+        });
+      });
     </script>
     <!-- 光标星星拖尾（仅桌面端内容页） -->
     <CursorSparkles client:only="vue" />
@@ -55,7 +61,7 @@ const currentPath = Astro.url.pathname;
         <div class="content-container nav-inner">
           <a href="/" class="nav-logo">
             <!-- TODO: REPLACE_ME — 你的网站标题 -->
-            My Space
+            WG-TG
           </a>
           <ul class="nav-links">
             {navLinks.map((link) => {
@@ -86,7 +92,7 @@ const currentPath = Astro.url.pathname;
       <footer class="footer">
         <div class="content-container text-center">
           <p class="footer-text">
-            &copy; {new Date().getFullYear()} My Space &middot; Crafted with care
+            &copy; {new Date().getFullYear()} WG-TG &middot; Crafted with care
           </p>
         </div>
       </footer>

@@ -5,8 +5,14 @@ import NotesFilter from '../../components/NotesFilter.vue';
 
 const rawNotes = await getCollection('notes');
 const notes = rawNotes.map((n) => ({
-  slug: n.slug,
-  data: { ...n.data, date: n.data.date.toISOString(), content: n.data.content || '' },
+  slug: n.id,
+  data: {
+    ...n.data,
+    date: n.data.date.toISOString(),
+    // 合并 frontmatter content + body 内容
+    content: n.data.content || '',
+    bodyHtml: n.rendered?.html || '',
+  },
 }));
 ---
 

@@ -1,22 +1,20 @@
 ---
 import Base from '../layouts/Base.astro';
 import ScrollReveal from '../components/ScrollReveal.vue';
+import ContactTabs from '../components/ContactTabs.vue';
 
-// TODO: REPLACE_ME — 替换为你的个人信息
 const siteOwner = {
-  name: 'Your Name',
-  tagline: '写代码、拍照片、探索世界。',
-  skills: ['TypeScript', 'Vue.js', 'React', 'Node.js', 'Python', 'Figma'],
-  projects: [
-    { title: 'Project Alpha', desc: 'An open-source developer tool.', url: 'https://github.com/WG-TG' },
-    { title: 'Project Beta', desc: 'A creative WebGL experiment.', url: 'https://github.com/WG-TG' },
-  ],
-  social: [
-    { label: 'GitHub', url: 'https://github.com/WG-TG' },
-    { label: 'Twitter', url: 'https://twitter.com/' },
-    { label: 'Email', url: 'mailto:hello@example.com' },
-  ],
+  name: 'L',
+  tagline: '踢球是生活，coding也是。',
+  skills: ['SpringBoot', 'Mybatis', 'Vue', 'Python', 'FastAPI', 'MySQL','......'],
 };
+
+const hobbyList = [
+  { title: '足球', desc: '绿茵场上奔跑，团队配合的快感无与伦比。', icon: '⚽', color: '#7EB8DA' },
+  { title: '编程', desc: '用代码构建世界，从后端到前端，不断探索新技术。', icon: '💻', color: '#B8A9D4' },
+  { title: '游戏', desc: '从主机到 PC，游戏是另一种探索世界的方式。', icon: '🎮', color: '#D4A5C4' },
+  { title: '音乐', desc: '旋律是最好的陪伴，吉他和播放列表是日常。', icon: '🎸', color: '#C4A8D0' },
+];
 ---
 
 <Base title="About" description="关于我">
@@ -25,12 +23,7 @@ const siteOwner = {
     <ScrollReveal client:load>
       <div class="about-hero">
         <div class="avatar-box">
-          <!-- TODO: REPLACE_ME — 替换头像图片 -->
-          <svg viewBox="0 0 100 100" class="avatar-svg">
-            <rect width="100" height="100" rx="20" fill="#F0EDEB"/>
-            <circle cx="50" cy="38" r="16" fill="#D4C8C0"/>
-            <ellipse cx="50" cy="78" rx="24" ry="20" fill="#D4C8C0"/>
-          </svg>
+          <img src="/avatar.jpg" alt="Avatar" class="avatar-img" />
         </div>
         <div>
           <h1 class="about-name">{siteOwner.name}</h1>
@@ -49,17 +42,19 @@ const siteOwner = {
       </section>
     </ScrollReveal>
 
-    <!-- 项目 -->
+    <!-- 爱好 -->
     <ScrollReveal client:load :delay="0.15">
       <section class="mt-16">
-        <h2 class="section-title">Projects</h2>
-        <div class="project-grid">
-          {siteOwner.projects.map((p) => (
-            <a href={p.url} target="_blank" rel="noopener" class="project-card">
-              <h3 class="project-title">{p.title}</h3>
-              <p class="project-desc">{p.desc}</p>
-              <span class="project-link">→ 查看项目</span>
-            </a>
+        <h2 class="section-title">Hobbies</h2>
+        <div class="hobby-grid">
+          {hobbyList.map((h) => (
+            <div class="hobby-card">
+              <div class="hobby-icon" style={`background: ${h.color}15; color: ${h.color}`}>
+                {h.icon}
+              </div>
+              <h3>{h.title}</h3>
+              <p>{h.desc}</p>
+            </div>
           ))}
         </div>
       </section>
@@ -69,11 +64,7 @@ const siteOwner = {
     <ScrollReveal client:load :delay="0.2">
       <section class="mt-16">
         <h2 class="section-title">Connect</h2>
-        <div class="social-links">
-          {siteOwner.social.map((l) => (
-            <a href={l.url} target="_blank" rel="noopener" class="social-link">{l.label}</a>
-          ))}
-        </div>
+        <ContactTabs client:load githubUser="WG-TG" />
       </section>
     </ScrollReveal>
   </div>
@@ -94,7 +85,10 @@ const siteOwner = {
     box-shadow: var(--shadow-md);
     background: linear-gradient(135deg, #F5F0F0 0%, #EDE8F0 100%);
   }
-  .avatar-svg { width: 100%; height: 100%; display: block; }
+  .avatar-img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+  }
   .about-name {
     font-size: 2.8rem; margin-bottom: 0.25rem;
     background: linear-gradient(135deg, var(--color-text) 0%, var(--color-accent-deep) 100%);
@@ -131,50 +125,40 @@ const siteOwner = {
     border-color: var(--color-accent);
     transform: translateY(-1px);
   }
-  .project-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;
+  .hobby-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem;
   }
-  .project-card {
-    display: block;
-    padding: 1.5rem;
-    border-radius: var(--radius-lg);
-    border: 1px solid var(--color-border);
+  .hobby-card {
     background: var(--color-surface);
-    text-decoration: none;
-    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    text-align: center;
     transition: all 0.3s var(--ease-out);
     box-shadow: var(--shadow-sm);
   }
-  .project-card:hover {
+  .hobby-card:hover {
     box-shadow: var(--shadow-hover);
-    border-color: var(--color-accent);
     transform: translateY(-2px);
-    text-decoration: none;
+    border-color: var(--color-accent);
   }
-  .project-title {
-    font-size: 1.1rem; font-weight: 600; margin-bottom: 0.4rem;
+  .hobby-icon {
+    width: 3rem; height: 3rem;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem;
+    margin: 0 auto 0.75rem;
+  }
+  .hobby-card h3 {
     font-family: var(--font-body);
+    font-size: 0.95rem; font-weight: 600;
+    margin-bottom: 0.3rem;
   }
-  .project-desc {
-    color: var(--color-text-light); font-size: 0.9rem; margin-bottom: 0.75rem;
-  }
-  .project-link {
-    font-size: 0.85rem; color: var(--color-accent-deep); font-weight: 500;
-  }
-  .social-links {
-    display: flex; flex-wrap: wrap; gap: 1.5rem;
-  }
-  .social-link {
-    font-size: 1rem; font-weight: 500;
-    color: var(--color-text);
-    padding-bottom: 2px;
-    border-bottom: 1.5px solid var(--color-accent-pink);
-    transition: all 0.2s;
-    text-decoration: none;
-  }
-  .social-link:hover {
-    color: var(--color-accent-purple);
-    border-bottom-color: var(--color-accent-purple);
-    text-decoration: none;
+  .hobby-card p {
+    font-size: 0.8rem; color: var(--color-text-light);
+    line-height: 1.6; margin: 0;
+    font-weight: 300;
   }
 </style>

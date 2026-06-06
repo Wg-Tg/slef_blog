@@ -59,21 +59,26 @@ onMounted(() => {
     trigger: wrapper.value,
     start: `top bottom-=${Math.round(props.threshold * 100)}%`,
     once: true,
-    onEnter: () => {
-      gsap.fromTo(
-        wrapper.value!,
-        { opacity: 0, y: 40 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-          delay: props.delay,
-          ease: 'power3.out',
-          overwrite: 'auto',
-        }
-      );
-    },
+    onEnter: () => animateIn(),
   });
+
+  // 兜底：View Transitions 场景下元素可能已在视口内
+  requestAnimationFrame(() => {
+    if (!wrapper.value) return;
+    const rect = wrapper.value.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+      animateIn();
+    }
+  });
+
+  function animateIn() {
+    if (!wrapper.value) return;
+    gsap.fromTo(
+      wrapper.value,
+      { opacity: 0, y: 40 },
+      { opacity: 1, y: 0, duration: 0.6, delay: props.delay, ease: 'power3.out', overwrite: 'auto' }
+    );
+  }
 });
 
 onUnmounted(() => {

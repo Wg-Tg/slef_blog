@@ -10,7 +10,10 @@ import gsap from 'gsap';
 
 interface Note {
   slug: string;
-  data: { content: string; date: string; tags?: string[]; mood?: '思考' | '灵感' | '发现' };
+  data: {
+    content: string; date: string; tags?: string[]; mood?: '思考' | '灵感' | '发现';
+    bodyHtml?: string;
+  };
 }
 
 const props = defineProps<{ notes: Note[] }>();
@@ -82,6 +85,7 @@ watch(() => filteredNotes.value.map((n) => n.slug).join(','), async () => {
               {{ new Date(note.data.date).toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' }) }}
             </time>
             <div class="note-text" v-html="renderMd(note.data.content)"></div>
+            <div v-if="note.data.bodyHtml" class="note-body-html" v-html="note.data.bodyHtml"></div>
             <div v-if="note.data.tags?.length" class="note-tags">
               <span v-for="t in note.data.tags" :key="t" class="note-tag">#{{ t }}</span>
             </div>
@@ -160,6 +164,15 @@ export function renderMd(text: string): string {
 .note-text :deep(pre) { margin: 0.4rem 0; padding: 0.6rem 0.8rem; font-size: 0.78rem; }
 .note-text :deep(code) { font-size: 0.85em; }
 .note-text :deep(a) { color: var(--color-accent-deep); }
+.note-body-html {
+  margin-top: 0.75rem;
+  font-size: 0.92rem; line-height: 1.75; color: var(--color-text);
+}
+.note-body-html :deep(h2), .note-body-html :deep(h3) { margin-top: 1rem; margin-bottom: 0.5rem; }
+.note-body-html :deep(pre) { margin: 0.4rem 0; padding: 0.6rem 0.8rem; font-size: 0.78rem; }
+.note-body-html :deep(code) { font-size: 0.85em; }
+.note-body-html :deep(a) { color: var(--color-accent-deep); }
+.note-body-html :deep(p) { margin-bottom: 0.75em; }
 .note-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.5rem; }
 .note-tag {
   font-family: var(--font-mono); font-size: 0.68rem;

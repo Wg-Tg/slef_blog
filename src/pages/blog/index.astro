@@ -13,13 +13,13 @@ const sortedPosts = posts.sort(
   <div class="content-container py-16">
     <div class="page-header">
       <h1>Blog</h1>
-      <p>文章是思想的沉淀。</p>
+      <p>文章是思想的沉淀。<br/><a href="https://blog.csdn.net/2401_83519807" target="_blank" rel="noopener" class="csdn-link">更多文章在 CSDN →</a></p>
     </div>
 
     <div class="post-list">
       {sortedPosts.map((post, i) => (
         <ScrollReveal client:load delay={i * 0.08}>
-          <a href={`/blog/${post.slug}`} class="post-card">
+          <a href={`/blog/${post.id}`} class="post-card">
             <div class="post-date">
               <span class="post-day">{post.data.date.getDate()}</span>
               <span class="post-month">
@@ -46,6 +46,19 @@ const sortedPosts = posts.sort(
   .page-header { margin-bottom: 2.5rem; }
   .page-header h1 { margin-bottom: 0.3rem; }
   .page-header p { color: var(--color-text-light); font-size: 1.1rem; font-weight: 300; }
+  .csdn-link {
+    color: var(--color-accent-purple);
+    font-size: 0.85rem;
+    font-weight: 400;
+    text-decoration: none;
+    border-bottom: 1px dashed var(--color-accent-purple);
+    transition: all 0.2s;
+  }
+  .csdn-link:hover {
+    color: var(--color-accent-deep);
+    border-bottom-color: var(--color-accent-deep);
+    text-decoration: none;
+  }
   .post-list { display: flex; flex-direction: column; gap: 1rem; }
   .post-card {
     display: flex; gap: 1.5rem; align-items: flex-start;

@@ -5,11 +5,10 @@ import ScrollReveal from '../../components/ScrollReveal.vue';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
-  return posts.map((post) => ({ params: { slug: post.slug }, props: { post } }));
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
 }
 
 const { post } = Astro.props;
-const { Content } = await post.render();
 ---
 
 <Base title={post.data.title} description={post.data.description}>
@@ -30,43 +29,18 @@ const { Content } = await post.render();
     </ScrollReveal>
 
     <ScrollReveal client:load :delay="0.1">
-      <article class="prose">
-        <Content />
-      </article>
+      <article class="prose" set:html={post.rendered?.html || post.body} />
     </ScrollReveal>
 
     <hr />
 
     <ScrollReveal client:load :delay="0.2">
-      <div id="comments">
-        <h3 class="comment-heading">Comments</h3>
-        <p class="comment-placeholder">Loading comments...</p>
+      <div class="article-footer">
+        <p>— 原文发表于 CSDN，<a href={`https://blog.csdn.net/2401_83519807`} target="_blank" rel="noopener">访问主页</a> —</p>
       </div>
     </ScrollReveal>
   </div>
 </Base>
-
-<script>
-  if (typeof window !== 'undefined') {
-    const s = document.createElement('script');
-    s.src = 'https://giscus.app/client.js';
-    s.setAttribute('data-repo', 'WG-TG/slef_blog');
-    s.setAttribute('data-repo-id', 'R_kgDOO');     // TODO: REPLACE_ME
-    s.setAttribute('data-category', 'Announcements');
-    s.setAttribute('data-category-id', 'DIC_kwDOO'); // TODO: REPLACE_ME
-    s.setAttribute('data-mapping', 'pathname');
-    s.setAttribute('data-strict', '0');
-    s.setAttribute('data-reactions-enabled', '1');
-    s.setAttribute('data-emit-metadata', '0');
-    s.setAttribute('data-input-position', 'bottom');
-    s.setAttribute('data-theme', 'light');
-    s.setAttribute('data-lang', 'zh-CN');
-    s.setAttribute('crossorigin', 'anonymous');
-    s.async = true;
-    s.onload = () => { document.querySelector('#comments .comment-placeholder')?.remove(); };
-    document.getElementById('comments')?.appendChild(s);
-  }
-</script>
 
 <style>
   .article-header { margin-bottom: 2.5rem; }
@@ -85,12 +59,22 @@ const { Content } = await post.render();
   .article-date {
     font-family: var(--font-mono); font-size: 0.8rem; color: var(--color-text-light);
   }
-  .comment-heading {
-    font-family: var(--font-body); font-size: 1.1rem;
-    font-weight: 600; margin-bottom: 1rem;
+  .article-footer {
+    text-align: center;
+    padding-top: 2rem;
+    color: var(--color-text-light);
+    font-size: 0.85rem;
+    font-weight: 300;
   }
-  .comment-placeholder {
-    color: var(--color-text-light); font-size: 0.9rem;
+  .article-footer a {
+    color: var(--color-accent-purple);
+    text-decoration: none;
+    border-bottom: 1px dashed var(--color-accent-purple);
+    transition: all 0.2s;
+  }
+  .article-footer a:hover {
+    color: var(--color-accent-deep);
+    border-bottom-color: var(--color-accent-deep);
   }
 
   /* Prose */
