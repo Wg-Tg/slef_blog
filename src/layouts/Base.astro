@@ -1,5 +1,6 @@
 ---
 import { ClientRouter } from 'astro:transitions';
+import Analytics from '@vercel/analytics/astro';
 import CursorSparkles from '../components/CursorSparkles.vue';
 import '../styles/global.css';
 
@@ -34,6 +35,7 @@ const currentPath = Astro.url.pathname;
     {description && <meta property="og:description" content={description} />}
     <meta property="og:type" content="website" />
     <ClientRouter />
+    <Analytics />
   </head>
   <body>
     <script>
